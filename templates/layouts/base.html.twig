@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width , initial-scale=1 , shrink-to-fit=no">
+
+
+
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <style>
+
+            .alert{
+                color: white;
+                padding: 10px;
+                text-align: center;
+            }
+            .alert-error {
+                background-color: red;
+            }
+
+            .alert-succes {
+                background-color: green;
+            }
+        </style>
+      <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.css">
+
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+        {% endblock %}
+    </head>
+    <body>
+        {{ include('layouts/partials/_nav.html.twig') }}
+        {{ include('layouts/partials/_flash_message.html.twig') }}
+        <main role="main" class="container">
+            {% block body %}{% endblock %}
+        </main>
+
+    {% block javacripts  %} {% endblock %}
+
+    </body>
+</html>
