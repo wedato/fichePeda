@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}
+    Creer fiche pedagogique
+{% endblock %}
+
+{% block body %}
+
+    <h1>creation fiche peda</h1>
+
+    {{ form_start(formView) }}
+
+
+    {{ form_widget(formView) }}
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i>
+        Créer la fiche pedagogique
+    </button>
+
+    {{ form_end(formView) }}
+
+{#    {{ form_widget(formView) }}#}
+
+
+{% endblock %}

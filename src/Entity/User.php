@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,6 +40,12 @@ class User implements UserInterface
      */
     private $password;
 
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +68,11 @@ class User implements UserInterface
         return $this->email;
     }
 
+    public function getName()
+    {
+        return $this->username;
+    }
+
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -81,9 +92,20 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function setRoles(array $roles): self
     {
-        return ['ROLE_USER'];
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function getSalt()
