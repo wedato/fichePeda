@@ -1,0 +1,34 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}
+    Etudiants
+{% endblock %}
+
+
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+                <th scope="col">Pseudo</th>
+            <th scope="col">Adresse mail</th>
+            <th scope="col">Fiche pédagogique</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for etu in etudiants %}
+            <tr class="table-active">
+                <td>{{ etu.id }}</td>
+                <td>{{ etu.name }}</td>
+                <td>{{ etu.username }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{{ path('consulter_fiche_etudiant',{'idEtudiant' : etu.id}) }}'">
+                        consulter
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

@@ -4,6 +4,9 @@
 namespace App\Controller;
 
 
+use App\Enum\RightsEnum;
+use App\Enum\UserTypeEnum;
+use App\Form\LoginType;
 use App\Form\UserRegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -27,14 +31,13 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $user = $form->getData();
-
             $plainPassword = $form->get('plainPassword')->getData();
 
 
             $user->setPassword($passwordEncoder->encodePassword($user,$plainPassword));
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success' , 'User successfully created !');
+            $this->addFlash('succes' , 'User successfully created !');
 
             return $this->redirectToRoute('app_home');
         }
@@ -49,9 +52,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login" , methods={"GET","POST"})
      */
-    public function login(): Response
+    public function login(AuthenticationUtils $utils): Response
     {
-        return $this->render('security/login.html.twig');
+        $form = $this->createForm(LoginType::class , ['email' => $utils->getLastUsername()]);
+
+        return $this->render('security/login.html.twig', [
+            'formView' => $form->createView(),
+            'error' => $utils->getLastAuthenticationError()
+        ]);
 
     }
 

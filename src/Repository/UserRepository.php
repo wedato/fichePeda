@@ -54,6 +54,20 @@ class UserRepository extends ServiceEntityRepository
         return $this->findOneBy(array('email' => $email));
     }
 
+    public function findByRole(string $role)
+        // WARNING : Also find values which contains $role in the value.
+    {
+        $users = $this->findAll();
+        $result = [];
+        foreach ($users as $user){
+            if(in_array($role, $user->getRoles())){
+                array_push($result, $user);
+            }
+        }
+
+        return $result;
+    }
+
 //    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
 //    {
 //        $user->setPassword($newEncodedPassword);

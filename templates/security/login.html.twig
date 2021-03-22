@@ -1,35 +1,25 @@
-{% extends 'layouts/base.html.twig' %}
+{% extends '/layouts/base.html.twig' %}
 
-{% block title 'Home' %}
+{% block title %}Connexion!{% endblock %}
 
 {% block body %}
-    <h1>Login</h1>
 
-    <form novalidate method="POST">
-        <div>
-            <label for="email">Email:</label>
-            <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value="{{ app.session.get(constant('App\\Controller\\SecurityController::LAST_EMAIL' )) }}"
-                    required
-                    autofocus>
+    <h1>Connexion</h1>
+
+
+    {% if error %}
+
+        <div class="alert alert-danger">
+            {{ error.message }}
         </div>
 
+    {% endif %}
+    {{ form_start(formView) }}
 
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required autofocus>
-        </div>
+    {{ form_widget(formView) }}
 
-        <div>
-            <input type="checkbox" id="remember_me" name="_remember_me" checked/>
-            <label for="remember_me">Keep me logged in</label>
-        </div>
+    <button type="submit" class="btn btn-success">Connexion</button>
 
-        <input type="hidden" name="csrf_token" value="{{ csrf_token('login_form') }}">
-        <input type="submit" value="Sign in">
-    </form>
+    {{ form_end(formView) }}
 
 {% endblock %}

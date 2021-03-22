@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Enum\UserTypeEnum;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,8 +32,7 @@ class UserRegistrationFormType extends AbstractType
                     new NotBlank,
                     new Length(['min' => 6 , 'max' => 4096]),
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

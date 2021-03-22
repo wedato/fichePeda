@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,6 +40,7 @@ class User implements UserInterface
      */
     private $password;
 
+
     /**
      * @ORM\Column(type="json")
      */
@@ -65,6 +66,11 @@ class User implements UserInterface
     public function getUsername(): ?string
     {
         return $this->email;
+    }
+
+    public function getName()
+    {
+        return $this->username;
     }
 
     public function setUsername(string $username): self

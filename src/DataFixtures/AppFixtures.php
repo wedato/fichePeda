@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Enum\UserTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -33,6 +34,18 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
+
+        $responsable = new User();
+
+        $hash = $this->encoder->encodePassword($admin, "password");
+
+        $responsable->setEmail("responsable@gmail.com")
+            ->setPassword($hash)
+            ->setUsername("Responsable")
+            ->setRoles(['ROLE_ADMIN', 'RESPONSABLE']);
+
+        $manager->persist($responsable);
+
         $secretaire = new User();
         $secretaire->setEmail("secretaire@gmail.com")
             ->setPassword($hash)
@@ -47,7 +60,8 @@ class AppFixtures extends Fixture
             $hash = $this->encoder->encodePassword($user,"password");
             $user->setEmail("user$u@gmail.com")
                 ->setUsername($faker->name())
-                ->setPassword($hash);
+                ->setPassword($hash)
+                ->setRoles(['ETUDIANT']);
 
             $manager->persist($user);
         }
