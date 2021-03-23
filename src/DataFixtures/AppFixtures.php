@@ -72,7 +72,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Mise à niveau")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(0);
         $manager->persist($ue);
 
@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Statistiques")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Système d’information")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -99,7 +99,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Programmation avancée ")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -108,7 +108,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Réseaux")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -117,7 +117,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Gestion comptable")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -126,7 +126,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Tech. de communication")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -135,7 +135,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Anglais")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -144,7 +144,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet informatique")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -153,7 +153,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet professionnel")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -162,7 +162,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Framework web")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -171,7 +171,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Recherche opérationnelle")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -180,7 +180,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Programmation N Tiers")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -189,7 +189,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet informatique 2")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -198,7 +198,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Droit")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -207,7 +207,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Environnement économique")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -216,7 +216,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Stage ou projet fin d’études ")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(6);
         $manager->persist($ue);
 
@@ -225,7 +225,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Prog impérative et objet")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(6);
         $manager->persist($ue);
 
@@ -234,7 +234,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet perso et pro")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -243,7 +243,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Analyse des algorithmes")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -252,7 +252,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Conception orientée objet")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -261,7 +261,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Langage et automate")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -270,7 +270,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Logique")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -279,7 +279,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Langages algébriques")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -288,7 +288,7 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Programmation logique")
             ->setInscription(true)
-            ->setValideNote("")
+            ->setValideNote(null)
             ->setECTS(3);
         $manager->persist($ue);
 

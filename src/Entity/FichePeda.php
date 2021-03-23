@@ -75,7 +75,7 @@ class FichePeda
     private $redoublantAjac;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $semDejaObtenu;
 
@@ -231,12 +231,12 @@ class FichePeda
         return $this;
     }
 
-    public function getSemDejaObtenu(): ?int
+    public function getSemDejaObtenu(): bool
     {
         return $this->semDejaObtenu;
     }
 
-    public function setSemDejaObtenu(?int $semDejaObtenu): self
+    public function setSemDejaObtenu(bool $semDejaObtenu): self
     {
         $this->semDejaObtenu = $semDejaObtenu;
 
