@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FichePedaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -81,6 +83,16 @@ class FichePeda
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $tierTemps;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=UE::class, inversedBy="fichePedas")
+     */
+    private $UEs;
+
+    public function __construct()
+    {
+        $this->UEs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -239,6 +251,30 @@ class FichePeda
     public function setTierTemps(?bool $tierTemps): self
     {
         $this->tierTemps = $tierTemps;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UE[]
+     */
+    public function getUEs(): Collection
+    {
+        return $this->UEs;
+    }
+
+    public function addUE(UE $uE): self
+    {
+        if (!$this->UEs->contains($uE)) {
+            $this->UEs[] = $uE;
+        }
+
+        return $this;
+    }
+
+    public function removeUE(UE $uE): self
+    {
+        $this->UEs->removeElement($uE);
 
         return $this;
     }
