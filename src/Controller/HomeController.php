@@ -8,6 +8,7 @@ use App\Form\FichePedaType;
 use App\Repository\FichePedaRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +33,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/etudiants", name="consulter_etudiants" , methods={"GET"})
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param FichePedaRepository $repository
      * @return Response
      */
@@ -53,6 +55,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/etudiants/{idFiche}", name="consulter_fiche_etudiant")
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param FichePedaRepository $repository
@@ -98,6 +101,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/fichesEnAttente", name="liste_fiche_en_attente" , methods={"GET"})
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param FichePedaRepository $repository
      * @return Response
      */
@@ -120,6 +124,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/fichesEnAttente/valider/{idFiche}", name="valider_fiche_etudiant")
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param Request $request
      * @param FichePedaRepository $repository
      * @param EntityManagerInterface $em
@@ -159,6 +164,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/remove/{idFiche}", name="delete_FichePeda", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param FichePedaRepository $repository
      * @param $idFiche
      * @return RedirectResponse

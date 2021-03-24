@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\FichePeda;
 use App\Form\FichePedaType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,6 +17,7 @@ class EtudiantController extends AbstractController
 {
     /**
      * @Route ("/creerFichePeda" , name="creation_fiche")
+     * @IsGranted("ROLE_USER" , message="Vous devez être connecté pour accéder à cette page")
      * @param FormFactoryInterface $factory
      * @param Request $request
      * @param EntityManagerInterface $em
