@@ -1,0 +1,15 @@
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-primary">Trier</button>
+    <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'nom'}) }}">Nom</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'numEtu'}) }}">Numero étudiant</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'dateNaissance'}) }}">Date de naissance</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'rse'}) }}">RSE</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'redoublantAjac'}) }}">Redoublant et AJAC</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'sem_deja_obtenu'}) }}">Semestre déjà obtenu</a>
+            <a class="dropdown-item" href="{{ path('validateSearch_by',{'option' : 'tierTemps'}) }}">Tier temps</a>
+        </div>
+    </div>
+</div>

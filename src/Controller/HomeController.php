@@ -9,6 +9,7 @@ use App\Repository\FichePedaRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/etudiants", name="consulter_etudiants" , methods={"GET"})
-     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
+     * @Security("is_granted('ROLE_RESPONSABLE')", message="Vous devez être professeur responsable pour accéder à cette page.")
      * @param FichePedaRepository $repository
      * @return Response
      */
@@ -54,7 +55,27 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/etudiants/{idFiche}", name="consulter_fiche_etudiant")
+     * @Route("/etudiants/all", name="consulter_etudiants_all" , methods={"GET"})
+     * @Security("is_granted('ROLE_SECRETAIRE')", message="Vous devez être secrétaire pour accéder à cette page.")
+     * @param FichePedaRepository $repository
+     * @return Response
+     */
+    public function consultAll(FichePedaRepository $repository): Response
+    {
+        $fiches = $repository->findAll();
+
+        if($fiches == []){
+            $this->addFlash('warning','Il n\'existe aucun étudiant dont la fiche est validée.');
+        }
+
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'consulter',
+            'fiches' => $fiches
+        ]);
+    }
+
+    /**
+     * @Route("/etudiants/edit/{idFiche}", name="consulter_fiche_etudiant")
      * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param Request $request
      * @param EntityManagerInterface $em
@@ -100,8 +121,43 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/fichesEnAttente", name="liste_fiche_en_attente" , methods={"GET"})
+     * @Route("/etudiants/{option}", name="search_by", methods={"GET"})
      * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
+     * @param FichePedaRepository $repository
+     * @param $option
+     * @return Response
+     */
+    public function searchingBy(FichePedaRepository $repository, $option): Response
+    {
+        $fiches = [];
+
+        if($option == 'nom' || $option == 'numEtu' || $option == 'dateNaissance'){
+            $fiches = $repository->findBy([
+                'isAgree' => true
+            ],[
+                $option => 'ASC'
+            ]);
+        }
+        elseif ($option == 'rse' || $option == 'redoublantAjac' || $option == 'sem_deja_obtenu' || $option == 'tierTemps'){
+            $fiches = $repository->findBy([
+                $option => true,
+                'isAgree' => true
+            ]);
+        }
+
+        if($fiches == []){
+            $this->addFlash('warning','Il n\'existe aucun étudiant correspondant à votre recherche.');
+        }
+
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'consulter',
+            'fiches' => $fiches
+        ]);
+    }
+
+    /**
+     * @Route("/fichesEnAttente", name="liste_fiche_en_attente" , methods={"GET"})
+     * @IsGranted("ROLE_RESPONSABLE" , message="Vous devez être responsable pour accéder à cette page")
      * @param FichePedaRepository $repository
      * @return Response
      */
@@ -123,8 +179,44 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/fichesEnAttente/valider/{idFiche}", name="valider_fiche_etudiant")
+     * @Route("/fichesEnAttente/{option}", name="validateSearch_by", methods={"GET"})
      * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
+     * @param FichePedaRepository $repository
+     * @param $option
+     * @return Response
+     */
+    public function validateSearchingBy(FichePedaRepository $repository, $option): Response
+    {
+        $fiches = [];
+
+        if($option == 'nom' || $option == 'numEtu' || $option == 'dateNaissance'){
+            $fiches = $repository->findBy([
+                'isAgree' => false
+            ],[
+                $option => 'ASC'
+            ]);
+        }
+        elseif ($option == 'rse' || $option == 'redoublantAjac' || $option == 'sem_deja_obtenu' || $option == 'tierTemps'){
+            $fiches = $repository->findBy([
+                $option => true,
+                'isAgree' => false
+            ]);
+        }
+
+        if($fiches == []){
+            $this->addFlash('warning','Il n\'existe aucun étudiant correspondant à votre recherche.');
+        }
+
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'valider',
+            'fiches' => $fiches
+        ]);
+    }
+
+
+    /**
+     * @Route("/fichesEnAttente/valider/{idFiche}", name="valider_fiche_etudiant")
+     * @IsGranted("ROLE_RESPONSABLE" , message="Vous devez être responsable pour accéder à cette page")
      * @param Request $request
      * @param FichePedaRepository $repository
      * @param EntityManagerInterface $em
@@ -181,4 +273,5 @@ class HomeController extends AbstractController
 
         return $this->redirectToRoute('consulter_etudiants');
     }
+
 }

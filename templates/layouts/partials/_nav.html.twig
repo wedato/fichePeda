@@ -12,9 +12,9 @@
                         <span class="sr-only">(current)</span>
                     </a>
 
-                    {% if "RESPONSABLE" in app.user.roles %}
+                    {% if "ROLE_RESPONSABLE" in app.user.roles %}
                         {{ include('layouts/responsable/nav-items_responsable.html.twig') }}
-                    {% elseif "SECRETAIRE" in app.user.roles %}
+                    {% elseif "ROLE_SECRETAIRE" in app.user.roles %}
                         {{ include('layouts/secretaire/nav-items_secretaire.html.twig') }}
                     {% else %}
                         {{ include('layouts/etudiant/nav-item_etudiant.html.twig') }}

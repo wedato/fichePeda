@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
         $responsable->setEmail("responsable@gmail.com")
             ->setPassword($hash)
             ->setUsername("Responsable")
-            ->setRoles(['ROLE_ADMIN', 'RESPONSABLE']);
+            ->setRoles(['ROLE_ADMIN', 'ROLE_RESPONSABLE']);
 
         $manager->persist($responsable);
 
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
         $secretaire->setEmail("secretaire@gmail.com")
             ->setPassword($hash)
             ->setUsername("Secretaire")
-            ->setRoles(['ROLE_ADMIN', 'SECRETAIRE']);
+            ->setRoles(['ROLE_ADMIN', 'ROLE_SECRETAIRE']);
 
         $manager->persist($secretaire);
 
@@ -271,7 +271,7 @@ class AppFixtures extends Fixture
         $manager->persist($ue4);
 
 
-        for ($i = 0 ; $i < 5 ; $i++){
+        for ($i = 0 ; $i < 20 ; $i++){
             $fiche = new FichePeda();
             $fiche->setNom($faker->lastName)
                 ->setPrenom($faker->firstName)
