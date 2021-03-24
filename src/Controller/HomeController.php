@@ -211,6 +211,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('liste_etudiants.twig', [
+
             'do' => 'valider',
             'fiches' => $fiches
         ]);
@@ -251,6 +252,8 @@ class HomeController extends AbstractController
             'fiches' => $fiches
         ]);
     }
+
+
 
 
     /**
