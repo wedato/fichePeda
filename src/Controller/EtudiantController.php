@@ -7,6 +7,7 @@ use App\Form\FichePedaType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,10 @@ class EtudiantController extends AbstractController
 {
     /**
      * @Route ("/creerFichePeda" , name="creation_fiche")
+     * @param FormFactoryInterface $factory
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse|Response
      */
     public function creerFichePeda(FormFactoryInterface $factory , Request $request , EntityManagerInterface $em )
     {

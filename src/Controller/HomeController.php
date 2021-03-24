@@ -4,10 +4,16 @@
 namespace App\Controller;
 
 
+use App\Form\FichePedaType;
+use App\Repository\FichePedaRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class HomeController extends AbstractController
 {
@@ -15,8 +21,10 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/", name="app_home" , methods={"GET"})
+     * @param UserRepository $users
+     * @return Response
      */
-    public function index(UserRepository $users)
+    public function index(UserRepository $users): Response
     {
         return $this->render('home.html.twig'
         );
@@ -24,58 +32,147 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/etudiants", name="consulter_etudiants" , methods={"GET"})
-     * @param UserRepository $repository
+     * @param FichePedaRepository $repository
      * @return Response
      */
-    public function consult(UserRepository $repository)
+    public function consult(FichePedaRepository $repository): Response
     {
-        $etudiants = $repository->findByRole("ETUDIANT");
+        $fiches = $repository->findBy([
+            'isAgree' => true
+        ]);
 
-        if($etudiants == []){
-            $this->addFlash('error','Il n\'existe aucun étudiant.');
+        if($fiches == []){
+            $this->addFlash('warning','Il n\'existe aucun étudiant dont la fiche est validée.');
         }
 
-        return $this->render('pagesResponsable/consulter_etudiants.html.twig', [
-            'etudiants' => $etudiants
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'consulter',
+            'fiches' => $fiches
         ]);
     }
 
     /**
-     * @Route("/etudiants/{idEtudiant}", name="consulter_fiche_etudiant")
-     * @param UserRepository $repository
-     * @param $idEtudiant
+     * @Route("/etudiants/{idFiche}", name="consulter_fiche_etudiant")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param FichePedaRepository $repository
+     * @param UserInterface $user
+     * @param $idFiche
      * @return Response
      */
-    public function consultFP(UserRepository $repository, /*FicheRepository $ficheRepository,*/ $idEtudiant)
+    public function consultFP(Request $request, EntityManagerInterface $em, FichePedaRepository $repository, UserInterface $user, $idFiche): Response
     {
-        $etudiant = $repository->findOneBy([
-            'id' => $idEtudiant
+        $fiche = $repository->findOneBy([
+            'id' => $idFiche
         ]);
 
-        //$idFiche = $etudiant->getIdFiche();
-        //$fiche = $ficheRepository->findOneBy([
-        //  'id' = $idFiche
-        //]);
+        $form = $this->createForm(FichePedaType::class , $fiche);
 
-        return $this->render('pagesResponsable/consulter_fiche_etudiant.html.twig',[
-            'etudiant' => $etudiant,
-            /*'fiche' => $fiche*/
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            if(in_array('RESPONSABLE',$user->getRoles())){
+                $fiche->setIsAgree(true);
+            }
+            else{
+                $fiche->setIsAgree(false);
+            }
+            $em->persist($fiche);
+            $em->flush();
+            $this->addFlash("success","La fiche pédagogique de ".
+                $fiche->getNom().
+                " ".
+                $fiche->getPrenom().
+                " a bien été modifiée."
+            );
+            return $this->redirectToRoute('consulter_etudiants');
+        }
+        $formView = $form->createView();
+
+        return $this->render('consulter_fiche_etudiant.html.twig',[
+            'formView' => $formView,
+            'fiche' => $fiche
         ]);
     }
 
 
     /**
      * @Route("/fichesEnAttente", name="liste_fiche_en_attente" , methods={"GET"})
+     * @param FichePedaRepository $repository
+     * @return Response
      */
-    public function waitToBeAgree(/*FicheRepository $repository*/)
+    public function waitToBeAgree(FichePedaRepository $repository): Response
     {
-        /*$fiches = $repository->findBy([
+        $fiches = $repository->findBy([
             "isAgree" => false
-        ]);*/
+        ]);
 
-        return $this->render('pagesResponsable/fiches_attente_validation.html.twig', [
-            /*'fiches' => $fiches*/
+        if(empty($fiches)){
+            $this->addFlash("success","Aucune fiche en attente de validation.");
+        }
+
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'valider',
+            'fiches' => $fiches
         ]);
     }
 
+
+    /**
+     * @Route("/fichesEnAttente/valider/{idFiche}", name="valider_fiche_etudiant")
+     * @param Request $request
+     * @param FichePedaRepository $repository
+     * @param EntityManagerInterface $em
+     * @param $idFiche
+     * @return Response
+     */
+    public function valider(Request $request, FichePedaRepository $repository, EntityManagerInterface $em, $idFiche): Response
+    {
+        $fiche = $repository->findOneBy([
+            'id' => $idFiche
+        ]);
+
+        $form = $this->createForm(FichePedaType::class , $fiche);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fiche->setIsAgree(true);
+            $em->persist($fiche);
+            $em->flush();
+            $this->addFlash("success", "La fiche pédagogique de " .
+                $fiche->getNom() .
+                " " .
+                $fiche->getPrenom() .
+                " a bien été validée."
+            );
+            return $this->redirectToRoute('liste_fiche_en_attente');
+        }
+        $formView = $form->createView();
+
+        return $this->render('valider_fiche_etudiant.html.twig',[
+            'formView' => $formView,
+            'fiche' => $fiche
+        ]);
+    }
+
+
+    /**
+     * @Route("/remove/{idFiche}", name="delete_FichePeda", methods={"GET"})
+     * @param FichePedaRepository $repository
+     * @param $idFiche
+     * @return RedirectResponse
+     */
+    public function remove(FichePedaRepository $repository, $idFiche): RedirectResponse
+    {
+        $entity = $repository->findOneBy([
+            'id' => $idFiche
+        ]);
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($entity);
+        $manager->flush();
+
+        return $this->redirectToRoute('consulter_etudiants');
+    }
 }

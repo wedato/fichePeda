@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}
+    {{ fiche.nom ~ " " ~ fiche.prenom }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(formView)}}
+
+
+    {{ form_widget(formView) }}
+
+    <button type="submit" class="btn btn-primary">
+        Modifier
+    </button>
+
+    <button type="button" class="btn btn-danger" onclick="location.href='{{ path('delete_FichePeda', {'idFiche' : fiche.id}) }}'">
+        Supprimer
+    </button>
+    {{ form_end(formView) }}
+
+{% endblock %}
+
+

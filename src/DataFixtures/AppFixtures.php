@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\FichePeda;
 use App\Entity\UE;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
@@ -51,7 +52,7 @@ class AppFixtures extends Fixture
         $secretaire->setEmail("secretaire@gmail.com")
             ->setPassword($hash)
             ->setUsername("Secretaire")
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN', 'SECRETAIRE']);
 
         $manager->persist($secretaire);
 
@@ -67,12 +68,13 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
+
+
         $ue = new UE();
         $ue->setCodeApogee("SLA5IF03")
             ->setType("OBL")
             ->setLibelle("Mise à niveau")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(0);
         $manager->persist($ue);
 
@@ -81,7 +83,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Statistiques")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -90,7 +91,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Système d’information")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -99,7 +99,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Programmation avancée ")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -108,7 +107,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Réseaux")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -117,7 +115,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Gestion comptable")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -126,7 +123,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Tech. de communication")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -135,7 +131,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Anglais")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -144,7 +139,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet informatique")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -153,7 +147,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet professionnel")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -162,7 +155,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Framework web")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -171,7 +163,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Recherche opérationnelle")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -180,7 +171,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Programmation N Tiers")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(5);
         $manager->persist($ue);
 
@@ -189,7 +179,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet informatique 2")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -198,7 +187,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Droit")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -207,7 +195,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Environnement économique")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
@@ -216,7 +203,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Stage ou projet fin d’études ")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(6);
         $manager->persist($ue);
 
@@ -225,7 +211,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Prog impérative et objet")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(6);
         $manager->persist($ue);
 
@@ -234,7 +219,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Projet perso et pro")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(2);
         $manager->persist($ue);
 
@@ -243,7 +227,6 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Analyse des algorithmes")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(4);
         $manager->persist($ue);
 
@@ -252,45 +235,68 @@ class AppFixtures extends Fixture
             ->setType("OBL")
             ->setLibelle("Conception orientée objet")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
         $manager->persist($ue);
 
-        $ue = new UE();
-        $ue->setCodeApogee("SLA5IF10")
+        $ue1 = new UE();
+        $ue1->setCodeApogee("SLA5IF10")
             ->setType("OBL")
             ->setLibelle("Langage et automate")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(4);
-        $manager->persist($ue);
+        $manager->persist($ue1);
 
-        $ue = new UE();
-        $ue->setCodeApogee("SLA5IF08")
+        $ue2 = new UE();
+        $ue2->setCodeApogee("SLA5IF08")
             ->setType("OBL")
             ->setLibelle("Logique")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
-        $manager->persist($ue);
+        $manager->persist($ue2);
 
-        $ue = new UE();
-        $ue->setCodeApogee("SLA6IF05")
+        $ue3 = new UE();
+        $ue3->setCodeApogee("SLA6IF05")
             ->setType("OBL")
             ->setLibelle("Langages algébriques")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
-        $manager->persist($ue);
+        $manager->persist($ue3);
 
-        $ue = new UE();
-        $ue->setCodeApogee("SLA6IF06")
+        $ue4 = new UE();
+        $ue4->setCodeApogee("SLA6IF06")
             ->setType("OBL")
             ->setLibelle("Programmation logique")
             ->setInscription(true)
-            ->setValideNote("")
             ->setECTS(3);
-        $manager->persist($ue);
+        $manager->persist($ue4);
+
+
+        for ($i = 0 ; $i < 5 ; $i++){
+            $fiche = new FichePeda();
+            $fiche->setNom($faker->lastName)
+                ->setPrenom($faker->firstName)
+                ->setNumEtu($faker->numberBetween(2100000,2199999))
+                ->setDateNaissance($faker->dateTime)
+                ->setAdressePostal($faker->postcode)
+                ->setNumTel($faker->phoneNumber)
+                ->setNumPortable($faker->phoneNumber)
+                ->setMail($faker->email)
+                ->setRse($faker->boolean())
+                ->setTypeControlTerminalRse($faker->boolean())
+                ->setTypeControlTerminalRse(null)
+                ->setRedoublantAjac($faker->boolean())
+                ->setSemDejaObtenu($faker->boolean())
+                ->setTierTemps($faker->boolean())
+                ->setIsAgree(false)
+                ->addUE($ue)
+                ->addUE($ue1)
+                ->addUE($ue2)
+                ->addUE($ue3)
+                ->addUE($ue4)
+            ;
+
+            $manager->persist($fiche);
+        }
 
 
         $manager->flush();

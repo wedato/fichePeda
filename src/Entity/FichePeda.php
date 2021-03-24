@@ -74,10 +74,11 @@ class FichePeda
      */
     private $redoublantAjac;
 
+
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    private $semDejaObtenu;
+    private $sem_deja_obtenu;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -88,6 +89,12 @@ class FichePeda
      * @ORM\ManyToMany(targetEntity=UE::class, inversedBy="fichePedas")
      */
     private $UEs;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAgree;
+
 
     public function __construct()
     {
@@ -231,17 +238,19 @@ class FichePeda
         return $this;
     }
 
-    public function getSemDejaObtenu(): ?int
+    public function getSemDejaObtenu(): ?bool
     {
-        return $this->semDejaObtenu;
+        return $this->sem_deja_obtenu;
     }
 
-    public function setSemDejaObtenu(?int $semDejaObtenu): self
+    public function setSemDejaObtenu(bool $sem_deja_obtenu): self
     {
-        $this->semDejaObtenu = $semDejaObtenu;
+        $this->sem_deja_obtenu = $sem_deja_obtenu;
 
         return $this;
     }
+
+
 
     public function getTierTemps(): ?bool
     {
@@ -275,6 +284,18 @@ class FichePeda
     public function removeUE(UE $uE): self
     {
         $this->UEs->removeElement($uE);
+
+        return $this;
+    }
+
+    public function getIsAgree(): ?bool
+    {
+        return $this->isAgree;
+    }
+
+    public function setIsAgree(bool $isAgree): self
+    {
+        $this->isAgree = $isAgree;
 
         return $this;
     }

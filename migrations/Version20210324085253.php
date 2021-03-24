@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210323151116 extends AbstractMigration
+final class Version20210324085253 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,7 +20,7 @@ final class Version20210323151116 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE fiche_peda (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, num_etu VARCHAR(255) NOT NULL, date_naissance DATE NOT NULL, adresse_postal VARCHAR(255) NOT NULL, num_tel VARCHAR(255) NOT NULL, num_portable VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, rse TINYINT(1) NOT NULL, type_control_terminal_rse TINYINT(1) DEFAULT NULL, redoublant_ajac TINYINT(1) NOT NULL, sem_deja_obtenu INT DEFAULT NULL, tier_temps TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE fiche_peda (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, num_etu VARCHAR(255) NOT NULL, date_naissance DATE NOT NULL, adresse_postal VARCHAR(255) NOT NULL, num_tel VARCHAR(255) NOT NULL, num_portable VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, rse TINYINT(1) NOT NULL, type_control_terminal_rse TINYINT(1) DEFAULT NULL, redoublant_ajac TINYINT(1) NOT NULL, sem_deja_obtenu TINYINT(1) NOT NULL, tier_temps TINYINT(1) DEFAULT NULL, is_agree TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE fiche_peda_ue (fiche_peda_id INT NOT NULL, ue_id INT NOT NULL, INDEX IDX_D664FA64471497AF (fiche_peda_id), INDEX IDX_D664FA6462E883B1 (ue_id), PRIMARY KEY(fiche_peda_id, ue_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ue (id INT AUTO_INCREMENT NOT NULL, code_apogee VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, libelle VARCHAR(255) NOT NULL, inscription TINYINT(1) NOT NULL, valide_note INT DEFAULT NULL, ects INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE users (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles JSON NOT NULL, UNIQUE INDEX UNIQ_1483A5E9E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
