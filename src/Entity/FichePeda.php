@@ -6,6 +6,7 @@ use App\Repository\FichePedaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FichePedaRepository::class)
@@ -21,46 +22,57 @@ class FichePeda
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom de famille est obligatoire ! ")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom est obligatoire ! ")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le num étudiant est obligatoire ! ")
      */
     private $numEtu;
 
     /**
      * @ORM\Column(type="date")
+     *
      */
     private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="L'adresse postal est obligatoire ! ")
      */
     private $adressePostal;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le num de tel est obligatoire ! ")
      */
     private $numTel;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le num de portable est obligatoire ! ")
      */
     private $numPortable;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(
+     *     message="Email non valide "
+     * )
      */
     private $mail;
 
     /**
      * @ORM\Column(type="boolean")
+     *
      */
     private $rse;
 
@@ -87,6 +99,7 @@ class FichePeda
 
     /**
      * @ORM\ManyToMany(targetEntity=UE::class, inversedBy="fichePedas")
+     * @Assert\NotBlank(message="Le nom de famille est obligatoire ! ")
      */
     private $UEs;
 
