@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Form\FichePedaType;
 use App\Repository\FichePedaRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,34 +22,44 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/", name="app_home" , methods={"GET"})
-     * @param UserRepository $users
      * @return Response
      */
-    public function index(UserRepository $users): Response
+    public function index(): Response
     {
         return $this->render('home.html.twig'
         );
     }
 
     /**
-     * @Route("/etudiants", name="consulter_etudiants" , methods={"GET"})
-     * @Security("is_granted('ROLE_RESPONSABLE')", message="Vous devez être professeur responsable pour accéder à cette page.")
+     * @Route("/Rechercher", name="search")
+     * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param FichePedaRepository $repository
+     * @param Request $request
      * @return Response
      */
-    public function consult(FichePedaRepository $repository): Response
+    public function search(FichePedaRepository $repository, Request $request): Response
     {
-        $fiches = $repository->findBy([
-            'isAgree' => true
-        ]);
+        $form = $this->createFormBuilder()->add('recherche', null,[
+            'help' => 'Entrez le nom de l\'étudiant que vous cherchez.'
+        ])->getForm();
 
-        if($fiches == []){
-            $this->addFlash('warning','Il n\'existe aucun étudiant dont la fiche est validée.');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $fiches = $repository->findBy([
+                'nom' => $data
+            ]);
+
+            if(empty($fiches)){
+                $this->addFlash("warning", "Aucune fiche ne correspond à votre recherche.");
+            }
+
+            return $this->render('searching/resultSearch.html.twig', [
+                'fiches' => $fiches
+            ]);
         }
-
-        return $this->render('liste_etudiants.twig', [
-            'do' => 'consulter',
-            'fiches' => $fiches
+        return $this->render('searching/search.html.twig',[
+            'formView' => $form->createView()
         ]);
     }
 
@@ -74,6 +83,30 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/etudiants", name="consulter_etudiants" , methods={"GET"})
+     * @Security("is_granted('ROLE_RESPONSABLE')", message="Vous devez être professeur responsable pour accéder à cette page.")
+     * @param FichePedaRepository $repository
+     * @return Response
+     */
+    public function consult(FichePedaRepository $repository): Response
+    {
+        $fiches = $repository->findBy([
+            'isAgree' => true
+        ]);
+
+        if($fiches == []){
+            $this->addFlash('warning','Il n\'existe aucun étudiant dont la fiche est validée.');
+        }
+
+        return $this->render('liste_etudiants.twig', [
+            'do' => 'consulter',
+            'fiches' => $fiches
+        ]);
+    }
+
+
     /**
      * @Route("/etudiants/edit/{idFiche}", name="consulter_fiche_etudiant")
      * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
@@ -95,7 +128,7 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            if(in_array('RESPONSABLE',$user->getRoles())){
+            if(in_array('ROLE_RESPONSABLE',$user->getRoles())){
                 $fiche->setIsAgree(true);
             }
             else{
@@ -109,7 +142,13 @@ class HomeController extends AbstractController
                 $fiche->getPrenom().
                 " a bien été modifiée."
             );
-            return $this->redirectToRoute('consulter_etudiants');
+            if(in_array('ROLE_RESPONSABLE',$user->getRoles())){
+                return $this->redirectToRoute('consulter_etudiants');
+
+            }
+            elseif (in_array('ROLE_SECRETAIRE',$user->getRoles())){
+                return $this->redirectToRoute('consulter_etudiants_all');
+            }
         }
         $formView = $form->createView();
 
@@ -258,10 +297,11 @@ class HomeController extends AbstractController
      * @Route("/remove/{idFiche}", name="delete_FichePeda", methods={"GET"})
      * @IsGranted("ROLE_ADMIN" , message="Vous devez être admin pour accéder à cette page")
      * @param FichePedaRepository $repository
+     * @param UserInterface $user
      * @param $idFiche
      * @return RedirectResponse
      */
-    public function remove(FichePedaRepository $repository, $idFiche): RedirectResponse
+    public function remove(FichePedaRepository $repository, UserInterface $user, $idFiche): RedirectResponse
     {
         $entity = $repository->findOneBy([
             'id' => $idFiche
@@ -271,7 +311,20 @@ class HomeController extends AbstractController
         $manager->remove($entity);
         $manager->flush();
 
-        return $this->redirectToRoute('consulter_etudiants');
+        $this->addFlash("success","La fiche pédagogique de " .
+            $entity->getNom() .
+            " " .
+            $entity->getPrenom() .
+            " a bien été supprimée."
+        );
+
+        if(in_array('ROLE_RESPONSABLE',$user->getRoles())){
+            return $this->redirectToRoute('consulter_etudiants');
+
+        }
+        elseif (in_array('ROLE_SECRETAIRE',$user->getRoles())){
+            return $this->redirectToRoute('consulter_etudiants_all');
+        }
     }
 
 }

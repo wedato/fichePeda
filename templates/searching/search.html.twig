@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(formView)}}
+
+    {{ form_widget(formView) }}
+
+    <button type="submit" class="btn btn-primary">
+        Rechercher
+    </button>
+
+    {{ form_end(formView) }}
+
+{% endblock %}
+
+
+
+

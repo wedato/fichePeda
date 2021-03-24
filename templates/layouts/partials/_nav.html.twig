@@ -8,9 +8,6 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 {% if app.user %}
-                    <a class="nav-link" href="{{ path('app_logout') }}">Logout
-                        <span class="sr-only">(current)</span>
-                    </a>
 
                     {% if "ROLE_RESPONSABLE" in app.user.roles %}
                         {{ include('layouts/responsable/nav-items_responsable.html.twig') }}
@@ -20,17 +17,30 @@
                         {{ include('layouts/etudiant/nav-item_etudiant.html.twig') }}
                     {% endif %}
 
-                {% else %}
-                    <a class="nav-link" href="{{ path('app_register') }}">Register
-                        <span class="sr-only">(current)</span>
-                    </a>
-
-                    <a class="nav-link" href="{{ path('app_login') }}">Login
-                        <span class="sr-only">(current)</span>
-                    </a>
-
                 {% endif %}
             </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+
+            {% if app.user %}
+
+                {% if "ROLE_RESPONSABLE" in app.user.roles or "ROLE_SECRETAIRE" in app.user.roles %}
+                    {{ include('layouts/partials/research_nav_bar_button.html.twig') }}
+                {% endif %}
+
+                <a class="nav-link" href="{{ path('app_logout') }}">Logout
+                    <span class="sr-only">(current)</span>
+                </a>
+
+            {% else %}
+                <a class="nav-link" style="display: inline-block" href="{{ path('app_register') }}">Register
+                    <span class="sr-only">(current)</span>
+                </a>
+
+                <a class="nav-link" style="display: inline-block" href="{{ path('app_login') }}">Login
+                    <span class="sr-only">(current)</span>
+                </a>
+            {% endif %}
         </ul>
     </div>
 </nav>

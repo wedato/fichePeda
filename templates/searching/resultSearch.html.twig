@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}
+    Fiches
+{% endblock %}
+
+
+{% block body %}
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Date de naissance</th>
+            <th scope="col">Numero étudiant</th>
+            <th scope="col">Adresse mail</th>
+            <th scope="col">Numero de téléphone portable</th>
+            <th scope="col">Validée</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fiche in fiches %}
+            <tr class="table-active">
+                <td>{{ fiche.nom }}</td>
+                <td>{{ fiche.prenom }}</td>
+                <td>{{ fiche.dateNaissance|date("d/m/Y") }}</td>
+                <td>{{ fiche.numEtu }}</td>
+                <td>{{ fiche.mail }}</td>
+                <td>{{ fiche.numPortable }}</td>
+                <td>{{ fiche.isAgree ? 'Oui':'Non' }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{{ path('consulter_fiche_etudiant',{'idFiche' : fiche.id}) }}'">
+                        consulter
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
